@@ -27,9 +27,11 @@ Android app for HCI
 
 7- Work in Android Studio on the project and after you make some changes use these commands:
 
+    git pull (get the updated files)
+    
     git status (to see the files you changed)
 
-    git add . (to add all changed files to stage)
+    git add -A (to add all changed files to stage)
 
     git commit -m "add your change message" (commit changes)
 
