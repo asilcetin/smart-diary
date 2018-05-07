@@ -1,7 +1,10 @@
 # smart-diary
 Android app for HCI
 
-# Git introduction
+## Authors
+Andreas Müller
+
+## Git introduction
 1- Download and install: https://gitforwindows.org/
 
 2- Open a Command Prompt and un the following commands to configure your Git username and email using the following commands, replacing Emma's name with your own:
