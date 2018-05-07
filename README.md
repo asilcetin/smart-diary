@@ -3,6 +3,7 @@ Android app for HCI
 
 ## Authors
 Andreas Müller
+Daria Piankova
 
 ## Git introduction
 1- Download and install: https://gitforwindows.org/
