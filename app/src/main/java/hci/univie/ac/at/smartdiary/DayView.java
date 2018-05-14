@@ -1,6 +1,5 @@
 package hci.univie.ac.at.smartdiary;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,24 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
+public class DayView extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_day_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Bind first diary button to the city screen
-        TextView textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDayView("Day 1");
-            }
-        });       
+        // Get the selected day
+        Bundle intentExtras = getIntent().getExtras();
+        String selectedDay = intentExtras.getString("selectedDay");
+
+        // Day title field
+        TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
+        dayTitleField.setText(selectedDay);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.day_view, menu);
         return true;
     }
 
@@ -109,12 +107,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    public void openDayView(String selectedDay) {
-        Intent intent = new Intent(this, DayView.class);
-        // Pass the selected city parameter
-        intent.putExtra("selectedDay", selectedDay);
-        startActivity(intent);
-    }
-
 }
