@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SmartDiary.iml" filepath="$PROJECT_DIR$/SmartDiary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Default.YOGA_3_11\Desktop\HCI\smart-diary\app\app.iml" filepath="C:\Users\Default.YOGA_3_11\Desktop\HCI\smart-diary\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/smart-diary.iml" filepath="$PROJECT_DIR$/smart-diary.iml" />
-      <module fileurl="file://C:\Users\Default.YOGA_3_11\Desktop\HCI\smart-diary\smart-diary.iml" filepath="C:\Users\Default.YOGA_3_11\Desktop\HCI\smart-diary\smart-diary.iml" />
     </modules>
   </component>
 </project>
