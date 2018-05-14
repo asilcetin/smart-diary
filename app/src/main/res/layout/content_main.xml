@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/mainLinearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -19,16 +19,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Day 1 - Lorem Ipsum" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Day 2 - Lorem ipsum" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

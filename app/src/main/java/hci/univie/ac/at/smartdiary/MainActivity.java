@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
@@ -25,14 +26,28 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Bind first diary button to the city screen
-        TextView textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDayView("Day 1");
-            }
-        });       
+
+        final String[] textArray = {"Day One", "Day Two", "Day Three", "Day Four"};
+        LinearLayout mainLinearLayout = (LinearLayout) findViewById(R.id.mainLinearLayout);
+        final TextView[] tv = new TextView[10];
+        for(int i = 0; i < textArray.length; i++ )
+        {
+            tv[i] = new TextView(this);
+            tv[i].setText(textArray[i]);
+            tv[i].setTextSize((float) 20);
+            tv[i].setPadding(20, 50, 20, 50);
+            mainLinearLayout.addView(tv[i]);
+
+            final int finalI = i;
+            tv[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openDayView(textArray[finalI]);
+                }
+            });
+
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
