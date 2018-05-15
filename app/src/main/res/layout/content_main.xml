@@ -19,5 +19,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:text="All Diary Entries"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
