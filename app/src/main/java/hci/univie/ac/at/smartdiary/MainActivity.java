@@ -95,7 +95,12 @@ public class MainActivity extends AppCompatActivity
                             }
                             String dayText = null;
                             try {
-                                dayText = dayObject.getString("text").substring(0, 100) + "...";
+                                String dayTextValue = dayObject.getString("text");
+                                if (dayTextValue.length() > 101) {
+                                    dayText = dayTextValue.substring(0, 100) + "...";
+                                } else {
+                                    dayText = dayTextValue;
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

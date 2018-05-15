@@ -1,5 +1,6 @@
 package hci.univie.ac.at.smartdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,9 +13,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class NewEntryView extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +39,59 @@ public class NewEntryView extends AppCompatActivity
         setContentView(R.layout.activity_new_entry_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
+
+        Button saveEntryBtn = (Button) findViewById(R.id.saveEntryBtn);
+        saveEntryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                TextView enterDate = (TextView) findViewById(R.id.enterDate);
+                String enterDateValue = (String) enterDate.getText().toString();;
+                TextView enterTitle = (TextView) findViewById(R.id.enterTitle);
+                String enterTitleValue = (String) enterTitle.getText().toString();;
+                TextView enterText = (TextView) findViewById(R.id.enterText);
+                String enterTextValue = (String) enterText.getText().toString();;
+
+                if (enterDateValue.isEmpty() || enterTextValue.isEmpty() || enterTitleValue.isEmpty()) {
+                    Snackbar.make(view, "Please fill out all the fields.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    /* ADD DIARY ENTRY */
+                    String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/add/"+enterDateValue+"/"+enterTitleValue+"/"+enterTextValue;
+                    // Get the diary data
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+
+                                    if (response.equals("1")) {
+                                        Intent intent = new Intent(NewEntryView.this, MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
+
+                    // Add the request to the RequestQueue.
+                    queue.add(stringRequest);
+
+
+                }
+
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
