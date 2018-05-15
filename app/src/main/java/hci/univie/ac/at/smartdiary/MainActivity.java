@@ -16,8 +16,21 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,27 +39,75 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
 
-        final String[] textArray = {"Day One", "Day Two", "Day Three", "Day Four"};
-        LinearLayout mainLinearLayout = (LinearLayout) findViewById(R.id.mainLinearLayout);
-        final TextView[] tv = new TextView[10];
-        for(int i = 0; i < textArray.length; i++ )
-        {
-            tv[i] = new TextView(this);
-            tv[i].setText(textArray[i]);
-            tv[i].setTextSize((float) 20);
-            tv[i].setPadding(20, 50, 20, 50);
-            mainLinearLayout.addView(tv[i]);
+        /* LISTING ALL DIARY ITEMS */
+        String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/list";
+        final LinearLayout mainLinearLayout = (LinearLayout) findViewById(R.id.mainLinearLayout);
+        // Get the diary data
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-            final int finalI = i;
-            tv[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openDayView(textArray[finalI]);
-                }
-            });
+                        JSONObject responseObject = null;
+                        try {
+                            responseObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONArray listArray = null;
+                        try {
+                            listArray = responseObject.getJSONArray("items");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        }
+                        // Append diary items to linear layout
+                        final TextView[] tv = new TextView[10];
+                        for(int i = 0; i < listArray.length(); i++ )
+                        {
+                            JSONObject dayObject = null;
+                            try {
+                                dayObject = listArray.getJSONObject(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            String day = null;
+                            try {
+                                day = dayObject.getString("day");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            tv[i] = new TextView(MainActivity.this);
+                            tv[i].setText(day);
+                            tv[i].setTextSize((float) 20);
+                            tv[i].setPadding(20, 50, 20, 50);
+                            mainLinearLayout.addView(tv[i]);
+
+                            final int finalI = i;
+                            tv[i].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //openDayView(textArray[finalI]);
+                                }
+                            });
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                TextView tv = new TextView(MainActivity.this);
+                mainLinearLayout.addView(tv);
+                tv.setText("There is a problem with loading the data.");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
