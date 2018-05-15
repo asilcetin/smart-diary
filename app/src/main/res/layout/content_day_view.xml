@@ -20,9 +20,28 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/dayDateField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="Date"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/dayTitleField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title" />
+            android:paddingBottom="10dp"
+            android:text="Title"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dayTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="Text"
+            android:textSize="16sp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

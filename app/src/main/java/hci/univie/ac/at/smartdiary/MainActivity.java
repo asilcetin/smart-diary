@@ -1,6 +1,7 @@
 package hci.univie.ac.at.smartdiary;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -65,7 +66,8 @@ public class MainActivity extends AppCompatActivity
                         }
 
                         // Append diary items to linear layout
-                        final TextView[] tv = new TextView[10];
+                        final TextView[] tv = new TextView[100];
+                        final TextView[] tvdesc = new TextView[100];
                         for(int i = 0; i < listArray.length(); i++ )
                         {
                             JSONObject dayObject = null;
@@ -74,26 +76,55 @@ public class MainActivity extends AppCompatActivity
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            String day = null;
+                            String dayID = null;
                             try {
-                                day = dayObject.getString("day");
+                                dayID = dayObject.getString("id");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            String dayDate = null;
+                            try {
+                                dayDate = dayObject.getString("day");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            String dayTitle = null;
+                            try {
+                                dayTitle = dayObject.getString("title");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            String dayText = null;
+                            try {
+                                dayText = dayObject.getString("text").substring(0, 100) + "...";
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                            tv[i] = new TextView(MainActivity.this);
-                            tv[i].setText(day);
-                            tv[i].setTextSize((float) 20);
-                            tv[i].setPadding(20, 50, 20, 50);
-                            mainLinearLayout.addView(tv[i]);
-
-                            final int finalI = i;
-                            tv[i].setOnClickListener(new View.OnClickListener() {
-                                @Override
+                            View.OnClickListener textViewHandler = new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    //openDayView(textArray[finalI]);
+                                    String tvDayID = (String) v.getTag();
+                                    openDayView(tvDayID);
                                 }
-                            });
+                            };
+
+                            tv[i] = new TextView(MainActivity.this);
+                            tv[i].setTag(dayID);
+                            tv[i].setText(dayDate + ": " + dayTitle);
+                            tv[i].setTextSize((float) 20);
+                            tv[i].setTypeface(null, Typeface.BOLD);
+                            tv[i].setPadding(50, 50, 50, 10);
+                            mainLinearLayout.addView(tv[i]);
+                            tv[i].setOnClickListener(textViewHandler);
+
+                            tvdesc[i] = new TextView(MainActivity.this);
+                            tvdesc[i].setTag(dayID);
+                            tvdesc[i].setText(dayText);
+                            tvdesc[i].setTextSize((float) 16);
+                            tvdesc[i].setPadding(50, 0, 50, 40);
+                            mainLinearLayout.addView(tvdesc[i]);
+                            tvdesc[i].setOnClickListener(textViewHandler);
+
                         }
 
                     }
@@ -108,7 +139,6 @@ public class MainActivity extends AppCompatActivity
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
