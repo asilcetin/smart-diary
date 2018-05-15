@@ -10,8 +10,8 @@
 
     <LinearLayout
         android:id="@+id/dayLinearLayout"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,6 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="20dp"
             android:text="Date"
             android:textSize="18sp" />
 
@@ -32,16 +35,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="Title"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/dayImageView"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:contentDescription="DayImage"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            app:srcCompat="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/dayTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="Text"
             android:textSize="16sp" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
