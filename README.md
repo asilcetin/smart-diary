@@ -2,8 +2,14 @@
 Android app for HCI
 
 ## Authors
-Andreas Müller
-Daria Piankova
+* Asil Çetin
+* Aleksandar Miskovic
+* Andreas Müller
+* Daria Piankova
+
+## Emulator
+Android App wurde mit folgendem Gerät (Simulator) getestet/entwickelt:
+* Nexus 5X, Android 5.1 Lollipop, 5.2” 1080x1920 420dpi, API-Level: 22, ABI: x86 (Android Studio 2) 
 
 ## Git introduction
 1- Download and install: https://gitforwindows.org/
