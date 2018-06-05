@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.InputType;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -95,14 +97,52 @@ public class DayView extends AppCompatActivity
                         }
 
                         // Day date field
-                        TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
+                        final TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
                         dayDateField.setText(dayDate);
                         // Day title field
-                        TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
+                        final TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
                         dayTitleField.setText(dayTitle);
                         // Day text field
-                        TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
+                        final TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
                         dayTextField.setText(dayText);
+
+                        dayDateField.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dayDateField.setFocusable(true);
+                                dayDateField.setEnabled(true);
+                                dayDateField.setClickable(true);
+                                dayDateField.setFocusableInTouchMode(true);
+                            }
+                        });
+
+                        dayTitleField.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dayTitleField.setFocusable(true);
+                                dayTitleField.setEnabled(true);
+                                dayTitleField.setClickable(true);
+                                dayTitleField.setFocusableInTouchMode(true);
+                            }
+                        });
+
+                        dayTextField.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dayTextField.setFocusable(true);
+                                dayTextField.setEnabled(true);
+                                dayTextField.setClickable(true);
+                                dayTextField.setFocusableInTouchMode(true);
+                            }
+                        });
+
+                        Button saveEntryBtn = (Button) findViewById(R.id.saveEntryBtn);
+                        saveEntryBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(final View view) {
+                                editEntry(dayID, view);
+                            }
+                        });
 
                     }
                 }, new Response.ErrorListener() {
@@ -125,6 +165,57 @@ public class DayView extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    public void editEntry(int entryID, final View view) {
+
+        /* EDITING A DIARY ITEM */
+        // Day date field
+        TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
+        String dayDateFieldValue = (String) dayDateField.getText().toString();
+        // Day title field
+        TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
+        String dayTitleFieldValue = (String) dayTitleField.getText().toString();
+        // Day text field
+        TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
+        String dayTextFieldValue = (String) dayTextField.getText().toString();
+        entryID = entryID + 1;
+
+
+        if (dayDateFieldValue.isEmpty() || dayTitleFieldValue.isEmpty() || dayTextFieldValue.isEmpty()) {
+            Snackbar.make(view, "Please fill out all the fields.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            /* ADD DIARY ENTRY */
+            final String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/edit/"+entryID+"/"+dayDateFieldValue+"/"+dayTitleFieldValue+"/"+dayTextFieldValue;
+            // Get the diary data
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            if (response.equals("1")) {
+                                Intent intent = new Intent(DayView.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -149,11 +240,6 @@ public class DayView extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
