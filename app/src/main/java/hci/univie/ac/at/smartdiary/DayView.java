@@ -71,78 +71,101 @@ public class DayView extends AppCompatActivity
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        JSONObject dayObject = null;
-                        try {
-                            dayObject = listArray.getJSONObject(dayID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String dayDate = null;
-                        try {
-                            dayDate = dayObject.getString("day");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String dayTitle = null;
-                        try {
-                            dayTitle = dayObject.getString("title");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String dayText = null;
-                        try {
-                            dayText = dayObject.getString("text");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
-                        // Day date field
-                        final TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
-                        dayDateField.setText(dayDate);
-                        // Day title field
-                        final TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
-                        dayTitleField.setText(dayTitle);
-                        // Day text field
-                        final TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
-                        dayTextField.setText(dayText);
-
-                        dayDateField.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dayDateField.setFocusable(true);
-                                dayDateField.setEnabled(true);
-                                dayDateField.setClickable(true);
-                                dayDateField.setFocusableInTouchMode(true);
+                        for(int i = 0; i < listArray.length(); i++ ) {
+                            JSONObject dayObject = null;
+                            try {
+                                dayObject = listArray.getJSONObject(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
-
-                        dayTitleField.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dayTitleField.setFocusable(true);
-                                dayTitleField.setEnabled(true);
-                                dayTitleField.setClickable(true);
-                                dayTitleField.setFocusableInTouchMode(true);
+                            int entryID = 0;
+                            try {
+                                entryID = Integer.parseInt(dayObject.getString("id"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
+                            
+                            if (entryID == (dayID+1)) {
 
-                        dayTextField.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dayTextField.setFocusable(true);
-                                dayTextField.setEnabled(true);
-                                dayTextField.setClickable(true);
-                                dayTextField.setFocusableInTouchMode(true);
-                            }
-                        });
+                                String dayDate = null;
+                                try {
+                                    dayDate = dayObject.getString("day");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String dayTitle = null;
+                                try {
+                                    dayTitle = dayObject.getString("title");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String dayText = null;
+                                try {
+                                    dayText = dayObject.getString("text");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
-                        Button saveEntryBtn = (Button) findViewById(R.id.saveEntryBtn);
-                        saveEntryBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View view) {
-                                editEntry(dayID, view);
+                                // Day date field
+                                final TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
+                                dayDateField.setText(dayDate);
+                                // Day title field
+                                final TextView dayTitleField = (TextView) findViewById(R.id.dayTitleField);
+                                dayTitleField.setText(dayTitle);
+                                // Day text field
+                                final TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
+                                dayTextField.setText(dayText);
+
+                                dayDateField.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dayDateField.setFocusable(true);
+                                        dayDateField.setEnabled(true);
+                                        dayDateField.setClickable(true);
+                                        dayDateField.setFocusableInTouchMode(true);
+                                    }
+                                });
+
+                                dayTitleField.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dayTitleField.setFocusable(true);
+                                        dayTitleField.setEnabled(true);
+                                        dayTitleField.setClickable(true);
+                                        dayTitleField.setFocusableInTouchMode(true);
+                                    }
+                                });
+
+                                dayTextField.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dayTextField.setFocusable(true);
+                                        dayTextField.setEnabled(true);
+                                        dayTextField.setClickable(true);
+                                        dayTextField.setFocusableInTouchMode(true);
+                                    }
+                                });
+
+                                Button saveEntryBtn = (Button) findViewById(R.id.saveEntryBtn);
+                                saveEntryBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View view) {
+                                        editEntry(dayID, view);
+                                    }
+                                });
+
+                                Button deleteEntryBtn = (Button) findViewById(R.id.deleteEntryBtn);
+                                deleteEntryBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View view) {
+                                        deleteEntry(dayID, view);
+                                    }
+                                });
+
                             }
-                        });
+                        }
+
 
                     }
                 }, new Response.ErrorListener() {
@@ -214,6 +237,43 @@ public class DayView extends AppCompatActivity
             queue.add(stringRequest);
 
         }
+    }
+
+
+    public void deleteEntry(int entryID, final View view) {
+
+        /* DELETING A DIARY ITEM */
+        entryID = entryID + 1;
+
+
+        /* DELETE DIARY ENTRY */
+        final String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/delete/"+entryID;
+        // Get the diary data
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        if (response.equals("1")) {
+                            Intent intent = new Intent(DayView.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Snackbar.make(view, "There is a problem with connecting the server.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
     }
 
 
