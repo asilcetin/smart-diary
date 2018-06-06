@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.eugeneek.smilebar.SmileBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,6 +107,13 @@ public class DayView extends AppCompatActivity
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                String dayRating = null;
+                                try {
+                                    dayRating = dayObject.getString("rating");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
 
                                 // Day date field
                                 final TextView dayDateField = (TextView) findViewById(R.id.dayDateField);
@@ -116,6 +124,13 @@ public class DayView extends AppCompatActivity
                                 // Day text field
                                 final TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
                                 dayTextField.setText(dayText);
+                                // Day rating field
+                                int dayRatingVal = 0;
+                                if (dayRating != null) {
+                                    dayRatingVal = Integer.parseInt(dayRating);
+                                }
+                                final SmileBar smileBar = (SmileBar) findViewById(R.id.starBar);
+                                smileBar.setRating(dayRatingVal);
 
                                 dayDateField.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -202,6 +217,10 @@ public class DayView extends AppCompatActivity
         TextView dayTextField = (TextView) findViewById(R.id.dayTextField);
         String dayTextFieldValue = (String) dayTextField.getText().toString();
         entryID = entryID + 1;
+        // Rating field
+        SmileBar smileBar = (SmileBar) findViewById(R.id.starBar);
+        int smileBarVal = smileBar.getRating();
+        String smileBarValue = Integer.toString(smileBarVal);
 
 
         if (dayDateFieldValue.isEmpty() || dayTitleFieldValue.isEmpty() || dayTextFieldValue.isEmpty()) {
@@ -209,7 +228,8 @@ public class DayView extends AppCompatActivity
                     .setAction("Action", null).show();
         } else {
             /* ADD DIARY ENTRY */
-            final String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/edit/"+entryID+"/"+dayDateFieldValue+"/"+dayTitleFieldValue+"/"+dayTextFieldValue;
+            String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/edit/"+entryID+"/"+dayDateFieldValue+"/"+dayTitleFieldValue+"/"+dayTextFieldValue+"/"+smileBarValue;
+            url = url.replace(" ", "%20");
             // Get the diary data
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {

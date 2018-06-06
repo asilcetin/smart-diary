@@ -20,6 +20,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="15dp"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -50,13 +53,34 @@
                 android:hint="Type your positive/negative experiences about this day"
                 android:inputType="textMultiLine" />
 
-            <ImageView
-                android:id="@+id/imageView5"
+            <TextView
+                android:id="@+id/starBarHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="How would you rate your day overall?"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.eugeneek.smilebar.SmileBar
+                android:id="@+id/starBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/review_proto" />
+                android:paddingBottom="20dp"
+                app:enabled="true"
+                app:horizontalSpacing="8dp"
+                app:rating="1"
+                app:smileDefault="@drawable/smile_rate_none"
+                app:smileHeight="50dp"
+                app:smileRate1="@drawable/smile_rate_1"
+                app:smileRate2="@drawable/smile_rate_2"
+                app:smileRate3="@drawable/smile_rate_3"
+                app:smileRate4="@drawable/smile_rate_4"
+                app:smileRate5="@drawable/smile_rate_5"
+                app:smileWidth="50dp" />
 
             <Button
                 android:id="@+id/saveEntryBtn"

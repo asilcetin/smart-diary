@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.eugeneek.smilebar.SmileBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,18 +50,23 @@ public class NewEntryView extends AppCompatActivity
             public void onClick(final View view) {
 
                 TextView enterDate = (TextView) findViewById(R.id.enterDate);
-                String enterDateValue = (String) enterDate.getText().toString();;
+                String enterDateValue = (String) enterDate.getText().toString();
                 TextView enterTitle = (TextView) findViewById(R.id.enterTitle);
-                String enterTitleValue = (String) enterTitle.getText().toString();;
+                String enterTitleValue = (String) enterTitle.getText().toString();
                 TextView enterText = (TextView) findViewById(R.id.enterText);
-                String enterTextValue = (String) enterText.getText().toString();;
+                String enterTextValue = (String) enterText.getText().toString();
+
+                SmileBar smileBar = (SmileBar) findViewById(R.id.starBar);
+                int smileBarVal = smileBar.getRating();
+                String smileBarValue = Integer.toString(smileBarVal);
 
                 if (enterDateValue.isEmpty() || enterTextValue.isEmpty() || enterTitleValue.isEmpty()) {
                     Snackbar.make(view, "Please fill out all the fields.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
                     /* ADD DIARY ENTRY */
-                    String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/add/"+enterDateValue+"/"+enterTitleValue+"/"+enterTextValue;
+                    String url ="https://uni.asilcetin.com/hci/smart-diary/api.php/add/"+enterDateValue+"/"+enterTitleValue+"/"+enterTextValue+"/"+smileBarValue;
+                    url = url.replace(" ", "%20");
                     // Get the diary data
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                             new Response.Listener<String>() {

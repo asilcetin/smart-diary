@@ -39,13 +39,31 @@
                 android:id="@+id/dayTitleField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
+                android:inputType="textMultiLine"
+                android:paddingBottom="0dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="Title"
-                android:inputType="textMultiLine"
                 android:textSize="22sp"
                 android:textStyle="bold" />
+
+            <com.eugeneek.smilebar.SmileBar
+                android:id="@+id/starBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="25dp"
+                android:paddingLeft="15dp"
+                app:enabled="true"
+                app:horizontalSpacing="8dp"
+                app:rating="1"
+                app:smileDefault="@drawable/smile_rate_none"
+                app:smileHeight="50dp"
+                app:smileRate1="@drawable/smile_rate_1"
+                app:smileRate2="@drawable/smile_rate_2"
+                app:smileRate3="@drawable/smile_rate_3"
+                app:smileRate4="@drawable/smile_rate_4"
+                app:smileRate5="@drawable/smile_rate_5"
+                app:smileWidth="50dp" />
 
             <ImageView
                 android:id="@+id/dayImageView"
